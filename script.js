@@ -1,5 +1,12 @@
 function calculateBill() {
 
+    // Get customer name
+    let customerName = document.getElementById("customerName").value.trim();
+    if (customerName === "") {
+        alert("⚠️ Please enter customer name!");
+        return;
+    }
+
     // Get quantities
     let cap        = parseInt(document.getElementById("cap").value) || 0;
     let latte      = parseInt(document.getElementById("latte").value) || 0;
@@ -29,12 +36,17 @@ function calculateBill() {
     if (subtotal === 0) {
         document.getElementById("summary").innerHTML = "⚠️ Please add at least one item!";
         document.getElementById("total").innerHTML = "";
+        document.getElementById("actionButtons").style.display = "none";
         return;
     }
 
+    // Date and time
+    let now    = new Date();
+    let date   = now.toLocaleDateString("en-IN");
+    let time   = now.toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit" });
+
     // Build order summary (only ordered items)
     let summary = "";
-
     if (cap > 0)        summary += `Cappuccino: ${cap} x ₹120 = ₹${cap * 120}<br>`;
     if (latte > 0)      summary += `Latte: ${latte} x ₹150 = ₹${latte * 150}<br>`;
     if (espresso > 0)   summary += `Espresso: ${espresso} x ₹100 = ₹${espresso * 100}<br>`;
@@ -50,12 +62,56 @@ function calculateBill() {
     let gst   = Math.round(subtotal * 0.05);
     let total = subtotal + gst;
 
-    // Display summary
-    document.getElementById("summary").innerHTML = summary +
-        `<br>─────────────────<br>
-        Subtotal: ₹${subtotal}<br>
-        GST (5%): ₹${gst}<br>`;
+    // Display summary with customer name
+    document.getElementById("summary").innerHTML =
+        `<b>Customer Name:</b> ${customerName}<br>
+         <b>Date:</b> ${date} &nbsp;|&nbsp; <b>Time:</b> ${time}<br><br>
+         ${summary}
+         <br>─────────────────<br>
+         Subtotal: ₹${subtotal}<br>
+         GST (5%): ₹${gst}<br>`;
 
     // Display total
     document.getElementById("total").innerHTML = "Total Bill: ₹" + total;
+
+    // Show Print and Reset buttons
+    document.getElementById("actionButtons").style.display = "flex";
+}
+
+// ── PRINT BILL ──
+function printBill() {
+    let billContent = document.querySelector(".bill").innerHTML;
+    let win = window.open("", "_blank");
+    win.document.write(`
+        <html>
+        <head>
+            <title>Brewora Cafe - Bill</title>
+            <style>
+                body { font-family: Arial, sans-serif; padding: 30px; max-width: 400px; margin: auto; }
+                h2 { text-align: center; }
+                h3 { text-align: center; color: #333; }
+                #actionButtons { display: none !important; }
+            </style>
+        </head>
+        <body>${billContent}</body>
+        </html>`);
+    win.document.close();
+    win.print();
+}
+
+// ── RESET / CLEAR ──
+function resetBill() {
+    // Clear customer name
+    document.getElementById("customerName").value = "";
+
+    // Reset all quantities to 0
+    let ids = ["cap","latte","espresso","coldcoffee","sandwich","fries","pizza","maggie","brownie","donut"];
+    ids.forEach(id => document.getElementById(id).value = 0);
+
+    // Clear bill
+    document.getElementById("summary").innerHTML = "";
+    document.getElementById("total").innerHTML = "";
+
+    // Hide buttons
+    document.getElementById("actionButtons").style.display = "none";
 }
