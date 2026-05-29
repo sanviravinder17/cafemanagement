@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cafe Management System</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .customer-input {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .customer-input input {
+            padding: 10px 16px;
+            font-size: 1rem;
+            border: 2px solid #ccc;
+            border-radius: 8px;
+            width: 260px;
+            outline: none;
+        }
+        .customer-input input:focus {
+            border-color: #4a3728;
+        }
+        .customer-input label {
+            display: block;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: #4a3728;
+        }
+        #actionButtons {
+            display: none;
+            text-align: center;
+            margin-top: 14px;
+            gap: 12px;
+            justify-content: center;
+        }
+        #actionButtons button {
+            padding: 10px 24px;
+            font-size: 0.9rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        .btn-print {
+            background: #4a3728;
+            color: white;
+        }
+        .btn-reset {
+            background: #e74c3c;
+            color: white;
+        }
+        .btn-print:hover { background: #2c1f15; }
+        .btn-reset:hover { background: #c0392b; }
+        .item img {
+            width: 100%;
+            height: 130px;
+            object-fit: cover;
+            border-radius: 10px 10px 0 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>☕ Brewora Cafe</h1>
+
+        <!-- Customer Name -->
+        <div class="customer-input">
+            <label>👤 Customer Name</label>
+            <input type="text" id="customerName" placeholder="Enter customer name">
+        </div>
+
+        <div class="menu">
+
+            <div class="item">
+                <img src="https://images.unsplash.com/photo-1572442388796-11668a67e53d?w=200&h=150&fit=crop" alt="Cappuccino">
+                <h3>Cappuccino</h3>
+                <p>₹120</p>
+                <input type="number" id="cap" min="0" value="0">
+            </div>
+
+            <div class="item">
+                <img src="https://images.unsplash.com/photo-1561047029-3000c68339ca?w=200&h=150&fit=crop" alt="Latte">
+                <h3>Latte</h3>
+                <p>₹150</p>
+                <input type="number" id="latte" min="0" value="0">
+            </div>
+
+            <div class="item">
+                <img src="https://images.unsplash.com/photo-1510707577719-ae7c14805e3a?w=200&h=150&fit=crop" alt="Espresso">
+                <h3>Espresso</h3>
+                <p>₹100</p>
+                <input type="number" id="espresso" min="0" value="0">
+            </div>
+
+            <div class="item">
+                <img src="https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=200&h=150&fit=crop" alt="Cold Coffee">
+                <h3>Cold Coffee</h3>
+                <p>₹140</p>
+                <input type="number" id="coldcoffee" min="0" value="0">
+            </div>
+
+            <div class="item">
+                <img src="https://images.unsplash.com/photo-1528736235302-52922df5c122?w=200&h=150&fit=crop" alt="Sandwich">
+                <h3>Sandwich</h3>
+                <p>₹80</p>
+                <input type="number" id="sandwich" min="0" value="0">
+            </div>
+
+            <div class="item">
+                <img src="https://images.unsplash.com/photo-1630384060421-cb20d0e0649d?w=200&h=150&fit=crop" alt="French Fries">
+                <h3>French Fries</h3>
+                <p>₹90</p>
+                <input type="number" id="fries" min="0" value="0">
+            </div>
+
+            <div class="item">
+                <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=200&h=150&fit=crop" alt="Pizza">
+                <h3>Pizza</h3>
+                <p>₹210</p>
+                <input type="number" id="pizza" min="0" value="0">
+            </div>
+
+            <div class="item">
+                <img src="https://images.unsplash.com/photo-1612929633738-8fe44f7ec841?w=200&h=150&fit=crop" alt="Maggie">
+                <h3>Maggie</h3>
+                <p>₹70</p>
+                <input type="number" id="maggie" min="0" value="0">
+            </div>
+
+            <div class="item">
+                <img src="https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=200&h=150&fit=crop" alt="Brownie">
+                <h3>Brownie</h3>
+                <p>₹90</p>
+                <input type="number" id="brownie" min="0" value="0">
+            </div>
+
+            <div class="item">
+                <img src="https://images.unsplash.com/photo-1551024601-bec78aea704b?w=200&h=150&fit=crop" alt="Donut">
+                <h3>Donut</h3>
+                <p>₹70</p>
+                <input type="number" id="donut" min="0" value="0">
+            </div>
+
+        </div>
+
+        <button onclick="calculateBill()">Generate Bill</button>
+
+        <div class="bill">
+            <h2>Order Summary</h2>
+            <p id="summary"></p>
+            <h3 id="total"></h3>
+
+            <!-- Print & Reset Buttons -->
+            <div id="actionButtons" style="display:flex;">
+                <button class="btn-print" onclick="printBill()">🖨️ Print Bill</button>
+                <button class="btn-reset" onclick="resetBill()">🔄 Reset / Clear</button>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
