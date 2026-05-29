@@ -59,33 +59,3 @@ function calculateBill() {
     // Display total
     document.getElementById("total").innerHTML = "Total Bill: ₹" + total;
 }
-
-// PRINT BILL
-function printBill() {
-    let billContent = document.querySelector(".bill").innerHTML;
-    let win = window.open("", "_blank");
-    win.document.write(`
-        <html>
-        <head>
-            <title>Brewora Cafe - Bill</title>
-            <style>
-                body { font-family: Arial, sans-serif; padding: 30px; max-width: 400px; margin: auto; }
-                h2 { text-align: center; }
-                h3 { text-align: center; }
-                #actionButtons { display: none; }
-            </style>
-        </head>
-        <body>${billContent}</body>
-        </html>`);
-    win.document.close();
-    win.print();
-}
-
-// RESET / CLEAR
-function resetBill() {
-    document.getElementById("customerName").value = "";
-    let ids = ["cap","latte","espresso","coldcoffee","sandwich","fries","pizza","maggie","brownie","donut"];
-    ids.forEach(id => document.getElementById(id).value = 0);
-    document.getElementById("summary").innerHTML = "";
-    document.getElementById("total").innerHTML = "";
-}
